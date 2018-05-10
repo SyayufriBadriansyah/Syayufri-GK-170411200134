@@ -1,0 +1,175 @@
+#include <windows.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
+float w=0;
+float xx=0;
+float yy=0;
+float zz=0;
+
+void balok(float ss){
+    float xx=(ss/4);
+    float yy=(ss/4);
+    float zz=(ss/4);
+    glColor3f(0,0,1);
+    glBegin(GL_POLYGON);
+        glVertex3f(-xx,yy,zz);
+        glVertex3f(xx,yy,zz);
+        glVertex3f(xx,-yy,zz);
+        glVertex3f(-xx,-yy,zz);
+    glEnd();
+    glColor3f(0,1,0);
+    glBegin(GL_POLYGON);
+        glVertex3f(-xx,yy,-zz);
+        glVertex3f(xx,yy,-zz);
+        glVertex3f(xx,-yy,-zz);
+        glVertex3f(-xx,-yy,-zz);
+    glEnd();
+    glColor3f(0,1,1);
+    glBegin(GL_POLYGON);
+        glVertex3f(xx,yy,zz);
+        glVertex3f(xx,yy,-zz);
+        glVertex3f(xx,-yy,-zz);
+        glVertex3f(xx,-yy,zz);
+    glEnd();
+    glColor3f(1,0,0);
+    glBegin(GL_POLYGON);
+        glVertex3f(-xx,-yy,zz);
+        glVertex3f(-xx,-yy,-zz);
+        glVertex3f(-xx,yy,-zz);
+        glVertex3f(-xx,yy,zz);
+    glEnd();
+    glColor3f(1,0,1);
+    glBegin(GL_POLYGON);
+        glVertex3f(-xx,yy,zz);
+        glVertex3f(-xx,yy,-zz);
+        glVertex3f(xx,yy,-zz);
+        glVertex3f(xx,yy,zz);
+    glEnd();
+    glColor3f(1,1,0);
+    glBegin(GL_POLYGON);
+        glVertex3f(-xx,-yy,zz);
+        glVertex3f(-xx,-yy,-zz);
+        glVertex3f(xx,-yy,-zz);
+        glVertex3f(xx,-yy,zz);
+    glEnd();
+}
+
+void display(void) {
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+    glRotatef(w,xx,yy,zz);
+    //kubus
+    glPushMatrix();
+    glColor3f(0.0, 0.0, 1.0);
+    glutWireCube(2);
+    glPopMatrix();
+    //Termos teh
+    glPushMatrix();
+    glColor3f(0,1,0);
+    glTranslatef(10,0,0);
+    glScalef(0.5,0.5,0.5);
+    glutWireTeapot(2);
+    glPopMatrix();
+    //bola merah
+    glPushMatrix();
+    glColor3f(1,0,0);
+    glTranslatef(-10,0,0);
+    glScalef(0.4,0.4,0.4);
+    glutWireSphere(3,7,9);
+    glPopMatrix();
+    //segitiga kuning
+    glPushMatrix();
+    glColor3f(1,1,0);
+    glTranslatef(0,10,0);
+    glScalef(0.5,0.5,0.5);
+    glutWireCone(2,4,7,9);
+    glPopMatrix();
+    //segitiga ungu
+    glPushMatrix();
+    glColor3f(1,0,1);
+    glTranslatef(0,-10,0);
+    glScalef(1.5,1.5,1.5);
+    glutWireTetrahedron();
+    glPopMatrix();
+    //2 segitiga
+    glPushMatrix();
+    glColor3f(0,1,1);
+    glTranslatef(0,0,10);
+    glScalef(1.5,1.5,1.5);
+    glutWireOctahedron();
+    glPopMatrix();
+    //kubus tengah
+    glPushMatrix();
+    glTranslatef(0,0,-10);
+    balok(2);
+    glPopMatrix();
+    //Garis Penghubung
+    glBegin(GL_LINES);
+        glColor3f(1,1,1);
+        glVertex3f(10,0,0);
+        glVertex3f(-10,0,0);
+
+        glVertex3f(0,10,0);
+        glVertex3f(0,-10,0);
+
+        glVertex3f(0,0,10);
+        glVertex3f(0,0,-10);
+    glEnd();
+    glFlush();
+}
+
+void init(void){
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-12.0, 12.0, -12.0,12.0, -12.0, 12.0);
+    glMatrixMode(GL_MODELVIEW);
+    glShadeModel (GL_FLAT);
+    glEnable(GL_DEPTH_TEST);
+}
+
+void keykeyboard(unsigned char key, int x, int y) {
+    switch (key){
+
+    case 'q':
+        exit(0);
+        break;
+    case 'w':
+        w=1;
+        xx=1;
+        yy=0;
+        zz=0;
+        break;
+    case 'e':
+        w=1;
+        xx=0;
+        yy=1;
+        zz=0;
+        break;
+    case 'r':
+        w=1;
+        xx=0;
+        yy=0;
+        zz=1;
+        break;
+        }
+        glutPostRedisplay();
+}
+
+int main(int argc, char** argv){
+
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(400, 400);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("7 Obyek 3 Dimensi");
+    init();
+    glutDisplayFunc(display);
+    glutKeyboardFunc(keykeyboard);
+    glutMainLoop();
+    return 0;
+}
