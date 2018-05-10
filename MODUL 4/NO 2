@@ -17,38 +17,51 @@
 #else
 #include <GL/glut.h>
 #endif
+#include<math.h>
 
 #include <stdlib.h>
 
 void display()
 {
-glClear(GL_COLOR_BUFFER_BIT);
-glColor3f(0.0,0.0,0.5);
-// Gambar kotak pertama di sudut kiri bawah
-glRecti(0,0, 10, 10);
-//Scaling kotak yang digambar di ke 20, 20 sebesar 1.5 kali
-glScaled(1.5, 1.5, 0.0);
-glRecti(20,20, 30, 30);
-glFlush();
+    glColor3f(1.0, 0.0, 0.0);
+    //Kotak tengah atas
+    glRecti(-5.0, 25.0, 5.0, 35.0);
+    //Perulangan dr Kotak Tengah atas
+    for (double i=0.0; i<11.0; i++)
+    {
+        glRotated(-30.0, 0.0, 0.0, 1.0);
+        glTranslated(0.0,0.0,0.0);
+        glRecti(-5.0, 25.0, 5.0, 35.0);
+    }
+    //lingkaran
+    glColor3f(1.0,1.0,0.0);
+    glBegin(GL_LINES);
+    for (float x=-30.0; x<=0.0; x+=0.01){
+        glVertex2f(30.0*cos(x), 30.0*sin(x));
+    }
+    glEnd();
+    glFlush();
 }
+
 void myinit()
 {
-glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-gluOrtho2D(0.0,50.0,0.0,50.0);
-glMatrixMode(GL_MODELVIEW);
-glClearColor(1.0,1.0,1.0,1.0);
-glColor3f(0.0,0.0,0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-50.0,50.0,-50.0,50.0);
+    glMatrixMode(GL_MODELVIEW);
+    glClearColor(1.0,1.0,1.0,1.0);
+    glColor3f(0.0,0.0,0.0);
 }
+
 int main(int argc, char* argv[])
 {
-glutInit(&argc,argv);
-glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-glutInitWindowSize(400,400);
-glutInitWindowPosition(100,100);
-glutCreateWindow("Transform");
-glutDisplayFunc(display);
-myinit();
-glutMainLoop();
-return 0;
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(400,400);
+    glutInitWindowPosition(100,100);
+    glutCreateWindow("Kotak Berputar 2");
+    glutDisplayFunc(display);
+    myinit();
+    glutMainLoop();
+    return 0;
 }
