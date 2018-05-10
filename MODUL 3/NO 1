@@ -11,7 +11,7 @@
  * number of geometry stacks and slices can be adjusted
  * using the + and - keys.
  */
-#include<windows.h>
+#include <windows.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -22,38 +22,53 @@
 
 void display(void)
 {
-/* bersihkan layar */
-glClear (GL_COLOR_BUFFER_BIT);
-glColor3f (1.0, 1.0, 0.0);
-float t = 0.0;
-glBegin(GL_POINTS);
-for(t = -1.0; t<=1.0; t+=0.01){
-/* x(t) = -1 + 2t; y(t) = 0 */
-glVertex3f (-1.0 + 2.0*t, 0.0, 0.0);
+    /* bersihkan layar */
+    glClear (GL_COLOR_BUFFER_BIT);
+    glColor3f (1.0, 1.0, 0.0);
+    float t = 0.0;
+    glBegin(GL_POINTS);
+    for(t = -1.0; t<=1.0; t+=0.01){
+    /* x(t) = -1 + 2t; y(t) = 0 */
+    // glVertex3f (-1.0 + 2.0*t, 0.0, 0.0);
+    /* x(t): 0.5 - t; y(t) = 1 + 2t */
+    glVertex3f (0.5 - t, 1.0 + 2.0*t, 0.0);
+    }
+    glEnd();
+    glFlush ();
 }
-glEnd();
-glFlush ();
-}
+
 void kunci(unsigned char key, int x, int y)
 {
-switch (key)
+    switch (key)
+    {
+        /* aplikasi berhenti ketika tombol q ditekan */
+        case 27 :
+        case 'q':
+        exit(0);
+        break;
+    }
+    glutPostRedisplay();
+}
+
+void myinit()
 {
-/* aplikasi berhenti ketika tombol q ditekan */
-case 27 :
-case 'q':
-exit(0);
-break;
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-4.0, 4.0, -4.0, 4.0);
+    glMatrixMode(GL_MODELVIEW);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glColor3f(1.0, 1.0, 0.0);
 }
-glutPostRedisplay();
-}
+
 int main(int argc, char *argv[])
 {
-glutInitWindowSize(400,400);
-glutInitWindowPosition(100,100);
-glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
-glutCreateWindow("Primitif");
-glutDisplayFunc(display);
-glutKeyboardFunc(kunci);
-glutMainLoop();
-return 0;
+    glutInitWindowSize(400,400);
+    glutInitWindowPosition(100,100);
+    glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
+    glutCreateWindow("Primitif");
+    glutDisplayFunc(display);
+    glutKeyboardFunc(kunci);
+    myinit();
+    glutMainLoop();
+    return 0;
 }
